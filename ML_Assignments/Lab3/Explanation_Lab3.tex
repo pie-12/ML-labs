@@ -1,0 +1,65 @@
+\documentclass{article}
+\usepackage[T5]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[vietnam]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showstringspaces=false,
+    tabsize=2
+}
+
+\title{Giải thích LAB 3: Regression Techniques}
+\author{Gemini CLI Assistant}
+\date{May 2026}
+
+\begin{document}
+\maketitle
+
+\section{Mục tiêu}
+Cài đặt thuật toán tối ưu hóa cơ bản và áp dụng các mô hình hồi quy.
+
+\section{Nội dung thực hiện}
+
+\subsection{Gradient Descent from Scratch}
+\begin{itemize}
+    \item Chúng tôi cài đặt thuật toán Batch Gradient Descent để tối ưu hóa hàm giá trị lỗi (MSE).
+    \item \textbf{Learning Rate ($\eta$):} Là tham số quan trọng nhất. Nếu quá lớn, thuật toán sẽ nhảy vọt qua cực tiểu và gây phân kỳ. Nếu quá nhỏ, nó sẽ mất rất nhiều thời gian để hội tụ.
+\end{itemize}
+
+\subsection{Hồi quy Đa thức (Polynomial Regression)}
+Sử dụng \texttt{PolynomialFeatures} để tạo ra các đặc trưng bậc cao từ đặc trưng ban đầu, cho phép mô hình tuyến tính học được các đường cong phức tạp.
+
+\subsection{Hồi quy Logistic (Logistic Regression)}
+\begin{itemize}
+    \item Mặc dù tên có chữ "Regression", đây thực chất là một thuật toán **phân loại**.
+    \item Sử dụng hàm **Sigmoid** để ánh xạ kết quả từ $(-\infty, +\infty)$ về khoảng $(0, 1)$, đại diện cho xác suất.
+    \item Đã áp dụng để phân loại hoa Iris Virginica.
+\end{itemize}
+
+\section{Giải thích Code chi tiết}
+\begin{itemize}
+    \item \textbf{Vòng lặp Gradient Descent:}
+    \begin{lstlisting}[language=Python]
+    gradients = 2/m * X_b.T.dot(X_b.dot(theta) - y)
+    theta = theta - eta * gradients
+    \end{lstlisting}
+    Dòng trên tính đạo hàm của hàm lỗi, dòng dưới cập nhật tham số $\theta$ theo hướng ngược lại với đạo hàm để giảm lỗi.
+    \item \textbf{Bias Term:} Chúng tôi thêm một cột toàn số 1 vào ma trận $X$ (\texttt{np.c\_[np.ones(...), X]}) để tính toán tham số chặn (intercept/bias).
+    \item \textbf{Hàm Sigmoid:} \texttt{1 / (1 + np.exp(-z))}. Hàm này bóp nén mọi giá trị số thực vào khoảng (0, 1). Trong code, nếu kết quả $> 0.5$, ta phân loại là lớp 1, ngược lại là lớp 0.
+\end{itemize}
+
+\end{document}

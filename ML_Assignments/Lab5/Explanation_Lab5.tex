@@ -1,0 +1,68 @@
+\documentclass{article}
+\usepackage[T5]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[vietnam]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showstringspaces=false,
+    tabsize=2
+}
+
+\title{Giải thích LAB 5: Model Evaluation}
+\author{Gemini CLI Assistant}
+\date{May 2026}
+
+\begin{document}
+\maketitle
+
+\section{Mục tiêu}
+Hiểu tại sao độ chính xác (Accuracy) không đủ để đánh giá mô hình, đặc biệt là với dữ liệu mất cân bằng (Imbalanced Data). Học cách sử dụng Precision, Recall, F1-score và ROC/AUC.
+
+\section{Nội dung thực hiện}
+
+\subsection{Vấn đề của Dữ liệu mất cân bằng}
+\begin{itemize}
+    \item Nếu 99\% dữ liệu là nhãn A, một mô hình "ngu ngơ" luôn dự đoán nhãn A sẽ đạt Accuracy 99\% nhưng hoàn toàn vô dụng trong việc tìm ra nhãn B.
+    \item Chúng tôi đã mô phỏng điều này bằng cách tạo ra một tập dữ liệu tổng hợp với tỷ lệ 9:1.
+\end{itemize}
+
+\subsection{Các chỉ số đánh giá quan trọng}
+\begin{itemize}
+    \item \textbf{Confusion Matrix:} Ma trận biểu diễn số lượng dự đoán đúng và sai cho từng lớp (TP, FP, TN, FN).
+    \item \textbf{Precision:} Tỷ lệ dự đoán đúng trong số các dự đoán là tích cực.
+    \item \textbf{Recall (Sensitivity):} Tỷ lệ dự đoán đúng trong số các trường hợp thực sự tích cực.
+    \item \textbf{F1-score:} Trung bình điều hòa của Precision và Recall, giúp cân bằng cả hai.
+\end{itemize}
+
+\subsection{ROC và AUC}
+\begin{itemize}
+    \item \textbf{ROC Curve:} Đường cong biểu diễn mối quan hệ giữa True Positive Rate và False Positive Rate tại các ngưỡng (threshold) khác nhau.
+    \item \textbf{AUC (Area Under Curve):} Diện tích dưới đường cong ROC. AUC càng gần 1.0 thì mô hình càng tốt.
+\end{itemize}
+
+\section{Giải thích Code chi tiết}
+\begin{itemize}
+    \item \textbf{\texttt{classification\_report}:} Hàm này của Sklearn trả về bảng tổng hợp Precision, Recall và F1 cho tất cả các lớp. Đây là công cụ "phải có" khi đánh giá mô hình.
+    \item \textbf{Predict vs Predict\_proba:} 
+    \begin{itemize}
+        \item \texttt{predict()} trả về nhãn (0 hoặc 1).
+        \item \texttt{predict\_proba()} trả về xác suất (ví dụ: 0.85). Chúng ta dùng xác suất này để vẽ đường cong ROC.
+    \end{itemize}
+    \item \textbf{Vẽ ROC Curve:} Chúng tôi dùng \texttt{roc\_curve()} để tính toán tọa độ (FPR, TPR) và dùng Matplotlib để nối chúng lại. Điểm (0,1) là vị trí lý tưởng nhất.
+\end{itemize}
+
+\end{document}

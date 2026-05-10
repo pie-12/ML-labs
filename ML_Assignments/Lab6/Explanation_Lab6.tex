@@ -1,0 +1,61 @@
+\documentclass{article}
+\usepackage[T5]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[vietnam]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showstringspaces=false,
+    tabsize=2
+}
+
+\title{Giải thích LAB 6: Ensemble Learning}
+\author{Gemini CLI Assistant}
+\date{May 2026}
+
+\begin{document}
+\maketitle
+
+\section{Mục tiêu}
+Tìm hiểu các phương pháp kết hợp nhiều mô hình (Ensemble) để đạt được hiệu suất cao hơn so với mô hình đơn lẻ. Tập trung vào Bagging (Random Forest) và Boosting (XGBoost).
+
+\section{Nội dung thực hiện}
+
+\subsection{Random Forest (Bagging)}
+\begin{itemize}
+    \item \textbf{Cơ chế:} Xây dựng nhiều cây quyết định độc lập trên các tập con của dữ liệu (Bootstrap) và lấy trung bình kết quả (Aggregating).
+    \item \textbf{Ưu điểm:} Giảm phương sai (Variance), hạn chế hiện tượng Overfitting của một cây đơn lẻ.
+\end{itemize}
+
+\subsection{XGBoost (Boosting)}
+\begin{itemize}
+    \item \textbf{Cơ chế:} Xây dựng các mô hình một cách tuần tự. Mỗi mô hình mới cố gắng sửa sai cho các mô hình đứng trước nó bằng cách tối ưu hóa hàm mất mát.
+    \item \textbf{Hiệu suất:} XGBoost hiện là một trong những thuật toán mạnh mẽ nhất cho dữ liệu dạng bảng (tabular data).
+\end{itemize}
+
+\subsection{So sánh hiệu suất}
+\begin{itemize}
+    \item Chúng tôi thực hiện so sánh giữa một cây quyết định đơn lẻ, mô hình Random Forest và mô hình XGBoost để thấy sự cải thiện về độ chính xác (Accuracy).
+\end{itemize}
+
+\section{Giải thích Code chi tiết}
+\begin{itemize}
+    \item \textbf{RandomForest - \texttt{n\_estimators}:} Đây là số lượng cây quyết định trong rừng. Càng nhiều cây, mô hình càng ổn định nhưng sẽ tốn thời gian tính toán hơn.
+    \item \textbf{XGBoost - \texttt{learning\_rate}:} Trong Boosting, mỗi cây mới chỉ học một phần sai số của cây trước. \texttt{learning\_rate} thấp giúp mô hình học kỹ hơn nhưng cần nhiều cây (\texttt{n\_estimators}) hơn.
+    \item \textbf{Feature Importance:} Một tính năng rất hay của Ensemble là \texttt{feature\_importances\_}. Code của chúng tôi đã vẽ biểu đồ này để bạn thấy đặc trưng nào (ví dụ: cánh hoa hay đài hoa) đóng góp nhiều nhất vào việc phân loại.
+\end{itemize}
+
+\end{document}

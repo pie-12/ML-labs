@@ -1,0 +1,69 @@
+\documentclass{article}
+\usepackage[T5]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[vietnam]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showstringspaces=false,
+    tabsize=2
+}
+
+\title{Giải thích LAB 4: Classification Techniques}
+\author{Gemini CLI Assistant}
+\date{May 2026}
+
+\begin{document}
+\maketitle
+
+\section{Mục tiêu}
+Nắm vững các thuật toán phân loại phổ biến: KNN, Naive Bayes, Cây quyết định và SVM.
+
+\section{Nội dung thực hiện}
+
+\subsection{K-Nearest Neighbors (KNN)}
+\begin{itemize}
+    \item \textbf{Nguyên lý:} Phân loại một điểm dữ liệu mới dựa trên đa số phiếu bầu của $K$ điểm lân cận gần nhất.
+    \item \textbf{Tham số $K$:} Nếu $K$ quá nhỏ, mô hình dễ bị nhiễu (Overfitting). Nếu $K$ quá lớn, ranh giới quyết định (Decision Boundary) trở nên quá phẳng và có thể bỏ sót các chi tiết quan trọng (Underfitting).
+\end{itemize}
+
+\subsection{Naive Bayes}
+\begin{itemize}
+    \item Dựa trên định lý Bayes với giả định "ngây thơ" là các đặc trưng độc lập với nhau.
+    \item Thường được dùng hiệu quả trong phân loại văn bản (ví dụ: Bộ lọc Spam).
+\end{itemize}
+
+\subsection{Cây quyết định (Decision Tree)}
+\begin{itemize}
+    \item Chia dữ liệu thành các nhánh dựa trên giá trị của các đặc trưng.
+    \item \textbf{Trực quan hóa:} Cây quyết định rất dễ giải thích cho con người (White-box model).
+\end{itemize}
+
+\subsection{Support Vector Machines (SVM)}
+\begin{itemize}
+    \item Tìm kiếm một siêu phẳng (hyperplane) tối ưu để phân tách các lớp với lề (margin) lớn nhất.
+    \item \textbf{RBF Kernel:} Cho phép SVM phân tách các dữ liệu phi tuyến (như tập \texttt{make\_moons}) bằng cách ánh xạ chúng vào không gian cao chiều hơn.
+\end{itemize}
+
+\section{Giải thích Code chi tiết}
+\begin{itemize}
+    \item \textbf{KNN Distance Metric:} Mặc định \texttt{KNeighborsClassifier} sử dụng khoảng cách Euclidean. Bạn có thể thấy trong code, khi thay đổi $K$, ranh giới giữa các màu sắc trên đồ thị thay đổi độ mượt.
+    \item \textbf{Naive Bayes - CountVectorizer:} Trong bộ lọc Spam, chúng tôi dùng công cụ này để chuyển văn bản thành ma trận đếm số lần xuất hiện của từ. Đây là đầu vào cần thiết cho thuật toán MultinomialNB.
+    \item \textbf{Decision Tree Visualization:} Lệnh \texttt{tree.plot\_tree()} trích xuất logic: "Nếu đặc trưng A $\le$ X thì đi sang trái, ngược lại đi sang phải". Mỗi nút lá (leaf) sẽ hiển thị lớp được dự đoán.
+    \item \textbf{SVM Gamma:} Tham số \texttt{gamma} trong RBF kernel điều chỉnh tầm ảnh hưởng của một điểm dữ liệu. Gamma lớn tạo ra ranh giới phức tạp, gamma nhỏ tạo ra ranh giới trơn tru hơn.
+\end{itemize}
+
+\end{document}

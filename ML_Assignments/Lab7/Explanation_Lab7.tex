@@ -1,0 +1,67 @@
+\documentclass{article}
+\usepackage[T5]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[vietnam]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showstringspaces=false,
+    tabsize=2
+}
+
+\title{Giải thích LAB 7: Clustering Techniques}
+\author{Gemini CLI Assistant}
+\date{May 2026}
+
+\begin{document}
+\maketitle
+
+\section{Mục tiêu}
+Nắm vững các kỹ thuật học không giám sát (Unsupervised Learning) thông qua phân cụm dữ liệu và phát hiện bất thường.
+
+\section{Nội dung thực hiện}
+
+\subsection{K-Means Clustering}
+\begin{itemize}
+    \item \textbf{Ứng dụng:} Phân khúc khách hàng (Customer Segmentation).
+    \item \textbf{Hạn chế:} Giả định các cụm có hình cầu và kích thước tương đồng. Hoạt động kém trên dữ liệu có hình dạng phức tạp.
+\end{itemize}
+
+\subsection{DBSCAN (Density-Based Spatial Clustering)}
+\begin{itemize}
+    \item \textbf{Nguyên lý:} Phân cụm dựa trên mật độ điểm.
+    \item \textbf{Ưu điểm:} Có thể phát hiện các cụm có hình dạng bất kỳ và tự động loại bỏ nhiễu (outliers). Đã thử nghiệm trên tập dữ liệu \texttt{make\_moons} để thấy sự khác biệt so với K-Means.
+\end{itemize}
+
+\subsection{Gaussian Mixture Models (GMM)}
+\begin{itemize}
+    \item \textbf{Phát hiện bất thường (Anomaly Detection):} GMM mô hình hóa dữ liệu bằng các phân phối Gaussian. Các điểm dữ liệu nằm ở vùng có mật độ xác suất thấp được coi là "bất thường".
+    \item \textbf{Ứng dụng:} Phát hiện xâm nhập mạng hoặc lỗi sản phẩm trong dây chuyền sản xuất.
+\end{itemize}
+
+\section{Giải thích Code chi tiết}
+\begin{itemize}
+    \item \textbf{K-Means - \texttt{inertia\_}:} Đây là tổng bình phương khoảng cách từ các điểm đến tâm cụm của chúng. Chúng tôi dùng giá trị này để vẽ "biểu đồ khuỷu tay" (Elbow method) nhằm tìm số lượng cụm $K$ tối ưu.
+    \item \textbf{DBSCAN - \texttt{eps} và \texttt{min\_samples}:} 
+    \begin{itemize}
+        \item \texttt{eps} là bán kính vùng lân cận.
+        \item \texttt{min\_samples} là số điểm tối thiểu để tạo thành một vùng đậm đặc.
+    \end{itemize}
+    Các điểm không thuộc vùng nào sẽ được gán nhãn -1 (nhiễu).
+    \item \textbf{GMM - \texttt{score\_samples()}:} Hàm này tính toán log-likelihood của mỗi điểm dữ liệu. Điểm nào có giá trị này cực thấp nghĩa là nó rất khác biệt so với phần còn lại $\rightarrow$ Anomaly (Bất thường).
+\end{itemize}
+
+\end{document}

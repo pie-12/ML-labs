@@ -1,0 +1,10 @@
+# Git Ignore
+ML_Full_Project.zip
+*.zip
+*.rar
+*.docx
+*.pdf
+.idea/
+__pycache__/
+.DS_Store
+Thumbs.db

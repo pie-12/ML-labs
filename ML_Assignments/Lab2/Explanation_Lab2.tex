@@ -1,0 +1,65 @@
+\documentclass{article}
+\usepackage[T5]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[vietnam]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showstringspaces=false,
+    tabsize=2
+}
+
+\title{Giải thích LAB 2: Dimensionality Reduction}
+\author{Gemini CLI Assistant}
+\date{May 2026}
+
+\begin{document}
+\maketitle
+
+\section{Mục tiêu}
+Nắm vững các kỹ thuật giảm chiều dữ liệu để trực quan hóa và giảm chi phí tính toán.
+
+\section{Nội dung thực hiện}
+
+\subsection{PCA (Principal Component Analysis)}
+\begin{itemize}
+    \item \textbf{Lý thuyết:} PCA tìm các hướng (thành phần chính) mà dữ liệu có phương sai lớn nhất.
+    \item \textbf{Cài đặt thủ công:} Sử dụng Numpy để tính toán SVD (Singular Value Decomposition) trên ma trận dữ liệu đã chuẩn hóa.
+    \item \textbf{So sánh:} Kết quả từ code thủ công và \texttt{sklearn.decomposition.PCA} là tương đương nhau, chứng minh hiểu biết về bản chất toán học.
+\end{itemize}
+
+\subsection{Kernel PCA}
+Được sử dụng khi dữ liệu không thể phân tách tuyến tính trong không gian ban đầu. Bằng cách sử dụng các hàm hạt nhân (như RBF), chúng ta có thể thực hiện giảm chiều trong một không gian đặc trưng mới.
+
+\subsection{t-SNE vs PCA (MNIST)}
+\begin{itemize}
+    \item \textbf{PCA:} Là phép biến đổi tuyến tính, thường làm các lớp dữ liệu MNIST bị chồng lấn khi nén xuống 2D.
+    \item \textbf{t-SNE:} Là thuật toán phi tuyến, tập trung bảo toàn cấu trúc lân cận. Kết quả là các cụm chữ số (0-9) được tách biệt rõ ràng, rất hữu ích cho việc trực quan hóa.
+\end{itemize}
+
+\section{Giải thích Code chi tiết}
+\begin{itemize}
+    \item \textbf{Numpy SVD (\texttt{np.linalg.svd}):} Trong code thủ công, chúng tôi sử dụng phân rã giá trị suy biến. Ma trận $U, \Sigma, V^T$ được trả về. Thành phần chính chính là các hàng của $V^T$.
+    \item \textbf{Center dữ liệu:} Trước khi chạy SVD, bắt buộc phải trừ đi giá trị trung bình (\texttt{X - X.mean()}). Nếu không, thành phần chính đầu tiên sẽ chỉ hướng về phía trọng tâm của dữ liệu thay vì hướng có phương sai lớn nhất.
+    \item \textbf{Explained Variance Ratio:} Trong Sklearn, thuộc tính \texttt{explained\_variance\_ratio\_} cho biết mỗi thành phần chính giữ lại bao nhiêu \% thông tin. Tổng của chúng giúp ta quyết định nên giảm xuống bao nhiêu chiều.
+    \item \textbf{t-SNE Hyperparameters:} 
+    \begin{itemize}
+        \item \texttt{perplexity}: Liên quan đến số lượng lân cận mà thuật toán xem xét.
+        \item \texttt{n\_components=2}: Ép dữ liệu về 2 chiều để vẽ đồ thị.
+    \end{itemize}
+\end{itemize}
+
+\end{document}
